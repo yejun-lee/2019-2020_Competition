@@ -1,6 +1,7 @@
 ## 2019-2020 Competition
 
 ### 2019 대한전기학회 미니드론 자율주행 경진대회
+### Mini-drone Autonomous-driving Competition 
 
 #### 결과 : Silver Prize (MathWorks award)
 
