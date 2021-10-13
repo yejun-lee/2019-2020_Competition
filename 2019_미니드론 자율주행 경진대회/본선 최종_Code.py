@@ -9,7 +9,6 @@ from e_drone.drone import *
 from e_drone.protocol import *
 
 
-
 ### 영상처리 구간 ###
 def test1():
     
@@ -24,7 +23,6 @@ def test1():
     set1 = 0
     set2 = 110
     
-
     for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
         frame1 = frame.array    ## frame HSV 변환 ##
         blur = cv2.GaussianBlur(frame1,(5,5),0)
@@ -109,7 +107,6 @@ def test1():
 
                     cv2.drawContours(frame1,[box2],-1,(0,255,255),3)
                     
-                    
                     x21, y21 = box2[0]
                     x23, y23 = box2[2]
 
@@ -152,7 +149,6 @@ def test1():
     ## 트랙 중간지점과 거리 표시 ##
         cv2.line(frame1,(int((x1+x3)/2),120),(160,120),(255,255,0),3)
         cv2.putText(frame1,"gab="+str(gab),(int((x1+x3)/2)+10,120-10),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),1,cv2.LINE_AA)
-
     
         if redarea>10000:
             cv2.putText(frame1,"Detected",(200,30),cv2.FONT_HERSHEY_SIMPLEX,0.7,(0,0,255),1,cv2.LINE_AA)
@@ -160,22 +156,15 @@ def test1():
             cv2.putText(frame1,"Detected",(200,60),cv2.FONT_HERSHEY_SIMPLEX,0.7,(0,255,0),1,cv2.LINE_AA)
         
         cv2.imshow("Frame",frame1)
-
-
         key = cv2.waitKey(1) & 0xFF
-
         rawCapture.truncate(0)
 
         if key == ord("q"):
             break
 
-
-
 ### 명령구간 ###
 def test2():
-
     if __name__ == '__main__':
-
         drone = Drone()
         drone.open()
         drone.sendLightManual(DeviceType.Drone, 0xFF, 0)
@@ -201,10 +190,8 @@ def test2():
             sleep(0.5)
     
     ### 비행 영역 ###
-
     ## 각도 확인 ##
         while(True):
-            
             if int(y2)>(int((set2-set1)/2)) and angle2>5 and angle2<90:
                 print("오른쪽 회전")
                 drone.sendControlPosition16(0, 0, 0,0, -6, 20)
@@ -220,8 +207,8 @@ def test2():
                     print("{0}".format(i))
                     sleep(0.5)
                     #sleep(0.3)
+                    
             elif (angle1<=7 and angle2>=83) or (angle1>=83 and angle2<=7):
-
                 ## 위치 확인 ##
                 if gab<-40 and gab>-100:
                     print("오른쪽 이동")
@@ -250,7 +237,6 @@ def test2():
                     t3.start()
                     t3.join()
 
-
                 ## 목적지 도착 시 ##
                 if abs(160-int((x21+x23)/2))<=30 and greenarea>=300:
                     while True:
@@ -260,6 +246,7 @@ def test2():
                             for i in range(2, 0, -1):
                                 print("{0}".format(i))
                                 sleep(0.5)
+                                
                         elif (int((x21+x23)/2)-160)>30:
                             print("왼쪽 이동")
                             drone.sendControlPosition16(0, 1, 0, 5, 0, 0)
@@ -291,16 +278,11 @@ def test2():
                             break
 
 ### 착지구간 ###         
-def test3():
-
-    
+def test3():  
     if __name__ == '__main__':
-
         drone = Drone()
         drone.open()
-
         if 60<gab1<=120:
-            
             print("직선구간_전진")
             drone.sendControlPosition16(6,0,0,5,0,0)
             for i in range(2,0,-1):
@@ -313,13 +295,12 @@ def test3():
             for i in range(2,0,-1):
                 print("{0}".format(i))
                 sleep(0.5)  
-
-            
            
         print("착지준비")
         sleep(2)
         print("Landing")
         drone.sendLanding()
+        
         for i in range(4, 0, -1):
             print("{0}".format(i))
             sleep(1)
@@ -346,8 +327,6 @@ def test3():
             print("{0}".format(i))
             sleep(0.5)
 
-              
-    
 t1=threading.Thread(target=test1)
 t2=threading.Thread(target=test2)
 t3=threading.Thread(target=test3)
